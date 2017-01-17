@@ -8,6 +8,7 @@
 #' lista_net<-path_net(pathway=path,net_type=netw)
 path_net<-function(pathway,net_type){
   lista_int<-list()
+  colnames(net_type)<-c("m_shar_pro","m2_shar_pro")
   for (k in 1:ncol(pathway)){
     #k=1 
     print(paste(k,"PATHWAY",colnames(pathway)[k]))
@@ -27,11 +28,11 @@ path_net<-function(pathway,net_type){
       v<-do.call("rbind", b)
       c=list()
       for (i in 1:length(common2)){
-        x<-common1[i]
-        n<-overlap(net_type,x,currentPathway_genes)
+        x<-common2[i]
+        n<-overlap_inv(net_type,x,currentPathway_genes)
         c[[i]]<-n
       }
-      v2<-do.call("rbind", b)
+      v2<-do.call("rbind", c)
       mago<-rbind(v,v2)
       mago2<-mago[!duplicated(mago), ]
     }
