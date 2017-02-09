@@ -463,7 +463,7 @@ The function `path_net` creates a network of interacting genes for each pathway.
 The output will be a network of genes belonging to the same pathway.  
 
 ```{r, eval = TRUE}
-network_path<-path_net(pathway=path,net_type=netw)
+network_path<-path_net(pathway=path,data=netw)
 ```
 
 

@@ -1,52 +1,35 @@
 #' @title Get human KEGG pathway data and network data in order to define the common gene.
 #' @description path_net creates a list of network data for each human pathway. The network data will be generated when interacting genes belong to that pathway.  
-#' @param net_type  network data as provided by getNETdata
+#' @param data  network data as provided by getNETdata
 #' @param pathway  pathway data as provided by getKEGGdata
+#' @importFrom igraph graph.data.frame induced.subgraph get.data.frame
 #' @export
 #' @return a list of network data for each pathway (interacting genes belong to that pathway)
 #' @examples
-#' lista_net<-path_net(pathway=path,net_type=netw)
-path_net<-function(pathway,net_type){
+#' lista_net<-path_net(pathway=path,data=netw)
+path_net<-function(pathway,data){
   lista_int<-list()
-  colnames(net_type)<-c("m_shar_pro","m2_shar_pro")
   for (k in 1:ncol(pathway)){
-    #k=1 
-    print(paste(k,"PATHWAY",colnames(pathway)[k]))
+    print(colnames(pathway)[k])
     currentPathway_genes<-pathway[,k]
-    common1 <- intersect( net_type$m_shar_pro, currentPathway_genes)
-    common2 <- intersect( net_type$m2_shar_pro, currentPathway_genes)
-    if (length(common1)==0 & length(common2)==0 ){
-      mago2<-character(length = 0)
-    }
-    if (length(common1)!=0 | length(common2)!=0 ){
-      b=list()
-      for (i in 1:length(common1)){
-        x<-common1[i]
-        n<-overlap(net_type,x,currentPathway_genes)
-        b[[i]]<-n
-      }
-      v<-do.call("rbind", b)
-      c=list()
-      for (i in 1:length(common2)){
-        x<-common2[i]
-        n<-overlap_inv(net_type,x,currentPathway_genes)
-        c[[i]]<-n
-      }
-      v2<-do.call("rbind", c)
-      mago<-rbind(v,v2)
-      mago2<-mago[!duplicated(mago), ]
-    }
-    
-    if (length(mago2)!=0){
-      lista_int[[k]]<-mago2
-    }
-    if (length(mago2)==0){
-      lista_int[[k]]<-"0"} 
-    
+    colnames(data) <- c("gene_symbolA", "gene_symbolB")
+    i <- sapply(data, is.factor)
+    data[i] <- lapply(data[i], as.character)
+    ver<-unlist(data)
+    n<-unique(ver)
+    s<-intersect(n,currentPathway_genes)
+    g <- graph.data.frame(data,directed=FALSE)
+    g2 <- induced.subgraph(graph=g,vids=s)
+    aaa<-get.data.frame(g2)
+    colnames(aaa)[1] <- 'V1'
+    colnames(aaa)[2] <- 'V2'
+    lista_int[[k]]<-aaa
     names(lista_int)[k]<-colnames(pathway)[k] 
-  }   
+  }
   return(lista_int)
 }
+
+
 
 
 #' @title Get human KEGG pathway data and output of path_net in order to define the common genes.
@@ -56,7 +39,7 @@ path_net<-function(pathway,net_type){
 #' @export
 #' @return a list of genes for each pathway (interacting genes belong to that pathway)
 #' @examples
-#' lista_netw<-path_net(pathway=path,net_type=netw)
+#' lista_netw<-path_net(pathway=path,data=netw)
 #' list_path<-list_path_net(lista_net=lista_netw,pathway=path)
 list_path_net<-function(lista_net,pathway){
 v=list()
@@ -65,6 +48,7 @@ for (j in 1:length(lista_net)){
   cf<-lista_net[[j]]
   i <- sapply(cf, is.factor) 
   cf[i] <- lapply(cf[i], as.character)
+  colnames(cf) <- c("m_shar_pro", "m2_shar_pro")
   m<-c(cf$m_shar_pro)
   m2<-c(cf$m2_shar_pro)
   s<-c(m,m2)

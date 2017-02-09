@@ -18,7 +18,7 @@ a list of genes for each pathway (interacting genes belong to that pathway)
 list_path_net creates a list of interacting genes for each human pathway.
 }
 \examples{
-lista_netw<-path_net(pathway=path,net_type=netw)
+lista_netw<-path_net(pathway=path,data=netw)
 list_path<-list_path_net(lista_net=lista_netw,pathway=path)
 }
 

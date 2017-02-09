@@ -4,12 +4,12 @@
 \alias{path_net}
 \title{Get human KEGG pathway data and network data in order to define the common gene.}
 \usage{
-path_net(pathway, net_type)
+path_net(pathway, data)
 }
 \arguments{
 \item{pathway}{pathway data as provided by getKEGGdata}
 
-\item{net_type}{network data as provided by getNETdata}
+\item{data}{network data as provided by getNETdata}
 }
 \value{
 a list of network data for each pathway (interacting genes belong to that pathway)
@@ -18,6 +18,6 @@ a list of network data for each pathway (interacting genes belong to that pathwa
 path_net creates a list of network data for each human pathway. The network data will be generated when interacting genes belong to that pathway.
 }
 \examples{
-lista_net<-path_net(pathway=path,net_type=netw)
+lista_net<-path_net(pathway=path,data=netw)
 }
 
