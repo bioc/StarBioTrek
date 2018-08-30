@@ -368,8 +368,9 @@ This tool `StarBioTrek` presents some methodologies to measure pathway activity 
 To install use the code below.
 
 ```{r, eval = FALSE}
-source("https://bioconductor.org/biocLite.R")
-biocLite("StarBioTrek")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("StarBioTrek")
 ```
 
 
