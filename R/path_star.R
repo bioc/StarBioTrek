@@ -333,7 +333,7 @@ ds_score_crtlk<-function(dataFilt,pathway){
   PEAmatrix_sd<-st_dv(dataFilt,pathway)
   df=combn(rownames(PEAmatrix_sd),2) 
   df=t(df)
-  ma<-matrix(0,nrow(df),ncol(PEAmatrix_sd)) # creo matrix che conterr? le somme delle dev st
+  ma<-matrix(0,nrow(df),ncol(PEAmatrix_sd)) # creo matrix che conterr le somme delle dev st
   colnames(ma)<-colnames(PEAmatrix_sd) # colnames conterr? il nome dei pazienti
   for ( p in 1: ncol(PEAmatrix_sd)){ # per ogni paziente
     patients <- (PEAmatrix_sd)[,p] 
@@ -444,7 +444,8 @@ y <- training$Target
 z<-subset(testing, select=-Target)
 
 zi<-testing$Target
-
+svm_tune <- tune(svm, train.x=x, train.y=y, 
+                 kernel="radial", ranges=list(cost=10^(-1:2), gamma=c(.5,1,2)))
 auc.df<-list()
 svm_model_after_tune_COMPL<-list()
 for( k in 2: ncol(training)){
@@ -452,11 +453,10 @@ for( k in 2: ncol(training)){
   
 
   
-  svm_tune <- tune(svm, train.x=x, train.y=y, 
-                   kernel="radial", ranges=list(cost=10^(-1:2), gamma=c(.5,1,2)),cross=10)
+
   #print(svm_tune)
   
-  svm_model_after_tune <- svm(Target ~ ., data=training[,c(1,k)], kernel="radial", cost=svm_tune$best.parameters$cost, gamma=svm_tune$best.parameters$gamma,cross=10,probability = TRUE)
+  svm_model_after_tune <- svm(Target ~ ., data=training[,c(1,k)], kernel="radial", cost=svm_tune$best.parameters$cost, gamma=svm_tune$best.parameters$gamma,probability = TRUE)
   
   
   #svm_model_after_tune <- svm(Target ~ ., data=training[,c(1,k)], kernel="radial", cost=svm_tune$best.parameters[1], gamma=svm_tune$best.parameters[2],cross=10,probability = TRUE)

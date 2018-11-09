@@ -141,11 +141,29 @@ xx <- as.list(x[mapped_genes])
 top3 <- matrix(0, length(xx), length(genes.by.pathway))
 rownames(top3) <- names(xx)
 colnames(top3)<- names(genes.by.pathway)
+
+
+
 for (j in  1:length(xx)){
   for (k in  1:length(genes.by.pathway)){
     if (length(intersect(xx[[j]],genes.by.pathway[[k]])!=0)){
       
-      top3[j,k]<-names(xx[j]) 
+     
+      
+       top3[j,k]<-names(xx[j]) 
+    }
+  }
+}
+
+
+
+for (j in  1:length(xx)){
+  for (k in  1:length(genes.by.pathway)){
+    if (length(intersect(xx[[j]],genes.by.pathway[[k]])!=0)){
+      
+
+
+     # top3[j,k]<-names(xx[j]) 
     }
   }
 }
