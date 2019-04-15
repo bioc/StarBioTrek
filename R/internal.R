@@ -1,14 +1,4 @@
-#' @title List of species
-#' @description List of species for network
-#' @param path_spec variable 
-#' @importFrom graphite pathwayDatabases
-#' @examples
-#' \dontrun{m<-SELECTpathspecies(path_spec)
-#' }
-SELECTpathspecies<-function(path_spec){
-  e<-pathwayDatabases()
-  return(e)
-}
+
 
 Uniform<-function(pathwayfrom){
   mapped_genes<-pathwayfrom
