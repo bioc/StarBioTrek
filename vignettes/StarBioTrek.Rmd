@@ -10,65 +10,59 @@ output:
         highlight: haddock
 
 references:
-- id: ref1
-  title: Orchestrating high-throughput genomic analysis with Bioconductor
-  author: 
-  - family: Huber, Wolfgang and Carey, Vincent J and Gentleman, Robert and Anders, Simon and Carlson, Marc and Carvalho, Benilton S and Bravo, Hector Corrada and Davis, Sean and Gatto, Laurent and Girke, Thomas and others
-    given:
-  journal: Nature methods
-  volume: 12
-  number: 2
-  pages: 115-121
-  issued:
-    year: 2015
 
-- id: ref2
-  title: GC-content normalization for RNA-Seq data
+
+- id: ref1
+  title: graphite - a Bioconductor package to convert pathway topology to gene network
   author: 
-  - family: Risso, Davide and Schwartz, Katja and Sherlock, Gavin and Dudoit, Sandrine
+  - family: Sales G, et al.
     given:
   journal: BMC bioinformatics
-  volume: 12
-  number: 1
-  pages: 480
+  volume: 13
+  DOI: "10.1186/1471-2105-13-20"
+  number: 
+  pages: 20
   issued:
-    year: 2011 
+    year: 2012 
     
-- id: ref3
-  title: Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments
+- id: ref2
+  title: The GeneMANIA prediction server biological network integration for gene prioritization and predicting gene function
   author: 
-  - family: Bullard, James H and Purdom, Elizabeth and Hansen, Kasper D and Dudoit, Sandrine
+  - family: Warde-Farley D, et al.
     given:
-  journal: BMC bioinformatics
-  volume: 11
-  number: 1
-  pages: 94
+  journal: Nucleic Acids Res.
+  volume: 28
+  number: 
+  pages: 214-20
   issued:
     year: 2010 
+    
+    
+- id: ref3
+  title: qgraph Network visualizations of relationships in psychometric data
+  author: 
+  - family:  S. Epskamp,  et al.
+    given:
+  journal:  Journal of Statistical Software
+  volume: 48
+  number: 4
+  pages: 1-18
+  issued:
+    year: 2012
 
 - id: ref4
-  title: Inferring regulatory element landscapes and transcription factor networks from cancer methylomes
+  title: GOplot an R package for visually combining expression data with functional analysis
   author: 
-  - family: Yao, L., Shen, H., Laird, P. W., Farnham, P. J., & Berman, B. P. 
+  - family: Walter W, et al.
     given:
-  journal: Genome biology
-  volume: 16
-  number: 1
-  pages: 105
+  journal: Bioinformatics
+  volume: 31
+  number: 17
+  pages: 2912-4
   issued:
     year: 2015 
 
-- id: ref5
-  title: Evaluation of statistical methods for normalization and differential expression in mRNA-Seq experiments
-  author: 
-  - family:  James H Bullard, Elizabeth Purdom, Kasper D Hansen and Sandrine Dudoit	
-    given:
-  journal: BMC Bioinformatics
-  volume: 11
-  number: 1
-  pages: 94
-  issued:
-    year: 2010 
+
 
 - id: ref6
   title: GC-content normalization for RNA-Seq data
@@ -360,7 +354,7 @@ devtools::load_all(".")
 # Introduction 
 
 Motivation: 
-New technologies have made possible to identify marker gene signatures. However, gene expression-based signatures present some limitations because they do not consider metabolic role of the genes and are affected by genetic heterogeneity across patient cohorts. Considering the activity of entire pathways rather than the expression levels of individual genes can be a way to exceed these limits.
+New technologies have made possible to identify marker gene signatures. However, gene expression-based signatures present some limitations because they do not consider metabolic role of the genes and are affected by genetic heterogeneity across patient cohorts. Considering the activity of entire pathways rather than the expression levels of individual genes can be a way to exceed these limits [@ref12].
 This tool `StarBioTrek` presents some methodologies to measure pathway activity and cross-talk among pathways integrating also the information of network and TCGA data. New measures are under development.  
 
 # Installation
@@ -375,70 +369,65 @@ BiocManager::install("StarBioTrek")
 
 
 
-# `Get data`: Get KEGG pathway, network and TCGA data 
+# `Get data`: Get pathway and network data
 
-## `getKEGGdata`: Searching KEGG data for download 
+## `SELECT_path_species`: Select the pathway database and species of interest
 
-You can easily search KEGG data and their genes using the `getKEGGdata` function. It can download 306 pathways from KEGG or the user can  select a particular list of pathways manually curated based on their role in the cell as metabolism, genetic Information processing, environmental information processing, Cellular processes and Organismal Systems using the following parameters:
-
-METABOLISM
-
-* **Carb_met** Carbohydrate_metabolism 
-* **Ener_met**  Energy_metabolism
-* **Lip_met** Lipid_metabolism 
-* **Amn_met** Aminoacid_metabolism 
-* **Gly_bio_met**  Glycan_biosynthesis_and_metabolism 
-* **Cof_vit_met** Metabolism_of_cofactors_and_vitamins 
-
-GENETIC INFORMATION PROCESSING
-
-* **Transcript**  Transcription
-* **Transl** Translation 
-* **Fold_degr** Folding_sorting_and_degradation 
-* **Repl_repair**  Replication_and_repair 
-
-ENVIRONMENTAL INFORMATION PROCESSING
-
-* **sign_transd**  Signal_transduction
-* **sign_mol_int** Signaling_molecules_and_interaction 
-
-CELLULAR PROCESSES
-
-* **Transp_cat**  Transport_and_catabolism
-* **cell_grow_d** Cell_growth_and_death 
-* **cell_comm** Cellular_community 
-
-ORGANISMAL SYSTEMS
-
-* **imm_syst**  Immune_system
-* **end_syst** Endocrine_system 
-* **circ_syst** Circulatory_system 
-* **dig_syst **    Digestive_system
-* **exc_syst** Excretory_system 
-* **nerv_syst **    Nervous_system
-* **sens_syst **    Sensory_system
-
-
-
-
-The following code is an example to download the pathways involved in Transcription:
+The user can select the pathway database and species of interest using some functions implemented in graphite [@ref1]
 
 ```{r, eval = TRUE}
-patha<-getKEGGdata(KEGG_path="Transcript")
+sel<-SELECTpathspecies(path_spec)
 ```
-
-For example the group Transcript contains different pathways:
-
 
 ```{r, eval = TRUE, echo = FALSE}
-knitr::kable(colnames(path), digits = 2,
-             caption = "List of patwhays for the group Transcript",row.names = FALSE)
+knitr::kable(sel, digits = 2,
+             caption = "List of patwhay database and species",row.names = FALSE)
 ```
 
-The function `getKEGGdata` with KEGG_path="KEGG_path" will download all KEGG pathaway. 
+## `GetData`: Searching pathway data for download 
+
+The user can easily search pathways data and their genes using the `GetData` function. It can download  pathways from several databases and species using the following parameters:
+
+```{r, eval = TRUE}
+species="hsapiens"
+pathwaydb="kegg"
+path<-GetData(species,pathwaydb)
+```
+
+
+## `GetPathData`: Get  genes inside pathways
+
+The user can identify the genes inside the pathways of interest
+
+```{r, eval = FALSE}
+pathway_ALLGENE<-GetPathData(path_ALL=path[1:3])
+```
+
+## `GetPathNet`: Get interacting genes inside pathways
+
+`GetPathNet` generates a list of interacting genes for each pathway 
+
+
+```{r, eval = FALSE}
+pathway_net<-GetPathNet(path_ALL=path[1:3])
+```
+
+
+
+
+## `ConvertedIDgenes`: Get  genes inside pathways
+
+The user can convert the gene ID into GeneSymbol
+
+```{r, eval = TRUE}
+pathway<-ConvertedIDgenes(path_ALL=path[1:10])
+```
+
+
+
 
 ## `getNETdata`: Searching network data for download 
-You can easily search human network data from GeneMania using the `getNETdata` function.
+You can easily search human network data from GeneMania using the `getNETdata` function [@ref2].
 The network category can be filtered using the following parameters: 
 
 * **PHint** Physical_interactions 
@@ -447,24 +436,35 @@ The network category can be filtered using the following parameters:
 * **PATH** Pathway 
 * **SHpd**  Shared_protein_domains 
 
+The species can be filtered using the following parameters:
+* **Arabidopsis_thaliana**
+* **Caenorhabditis_elegans**
+* **Danio_rerio**
+* **Drosophila_melanogaster**
+* **Escherichia_coli**
+* **Homo_sapiens**
+* **Mus_musculus**
+* **Rattus_norvegicus**
+* **Saccharomyces_cerevisiae**
+
 For default the organism is homo sapiens. 
 The example show the shared protein domain network for Saccharomyces_cerevisiae. For more information see `SpidermiR` package.
 
 ```{r, eval = TRUE}
-organism="Saccharomyces_cerevisiae"
-netwa<-getNETdata(network="SHpd",organism)
+organismID="Saccharomyces_cerevisiae"
+netw<-getNETdata(network="SHpd",organismID)
 ```
 
 
-# `Integration data`: Integration between KEGG pathway and network data 
+# `Integration data`: Integration between pathway and network data 
 
 ## `path_net`: Network of interacting genes for each pathway according a network type (PHint,COloc,GENint,PATH,SHpd)
 
-The function `path_net` creates a network of interacting genes for each pathway. Interacting genes are genes belonging to the same pathway and the interaction is given from network chosen by the user, according the paramenters of the function `getNETdata`.
+The function `path_net` creates a network of interacting genes (downloaded from GeneMania) for each pathway. Interacting genes are genes belonging to the same pathway and the interaction is given from network chosen by the user, according the paramenters of the function `getNETdata`.
 The output will be a network of genes belonging to the same pathway.  
 
 ```{r, eval = TRUE}
-network_path<-path_net(pathway=path,data=netw)
+lista_net<-pathnet(genes.by.pathway=pathway[1:5],data=netw)
 ```
 
 
@@ -474,36 +474,51 @@ The function `list_path_net` creates a list of interacting genes for each pathwa
 The output will be a list of genes belonging to the same pathway and those having an interaction in the network.  
 
 ```{r, eval = TRUE}
-list_path<-list_path_net(lista_net=network_path,pathway=path)
+list_path<-listpathnet(lista_net=lista_net,pathway=pathway[1:5])
 ```
+
+
 
 
 
 
 # `Pathway summary indexes`: Score for each pathway 
 
-## `GE_matrix`: Get human KEGG pathway data and a gene expression matrix in order to obtain a matrix with the gene expression for only genes given containing in the pathways given in input by the user.
+## `GE_matrix`: grouping gene expression profiles in pathways
+Get human KEGG pathway data and a gene expression matrix in order to obtain a matrix with the gene expression levels grouped by pathways.
 
-Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `GE_matrix` creates a of gene expression levels for each pathway given by the user:
+Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `GE_matrix` creates a profile of gene expression levels for each pathway given by the user:
 
 ```{r, eval = TRUE}
-list_path_gene<-GE_matrix(DataMatrix=tumo[,1:2],pathway=path)
+list_path_gene<-GE_matrix(DataMatrix=tumo[,1:2],genes.by.pathway=pathway[1:10])
 ```
+
+
+
+
+## `GE_matrix_mean`: 
+Get human KEGG pathway data and a gene expression matrix in order to obtain a matrix PXG (in the columns there are the pathways and in the rows there are genes) with the mean gene expression for only genes given containing in the pathways given in input by the user.
+
+```{r, eval = TRUE}
+list_path_plot<-GE_matrix_mean(DataMatrix=tumo[,1:2],genes.by.pathway=pathway[1:10])
+```
+
+
 
 ## `average`: Average of genes for each pathway starting from a matrix of gene expression 
-Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `average` creates an average matrix of gene expression for each pathway:
+Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `average` creates an average matrix (SXG: S are the samples and P the pathways) of gene expression for each pathway:
 
-```{r, eval = TRUE}
-score_mean<-average(dataFilt=tumo[,1:2],pathway=path)
+```{r, eval = FALSE}
+score_mean<-average(pathwayexpsubset=list_path_gene)
 ```
 
 
 
-## `st_dv`: Standard deviations of genes for each pathway starting from a matrix of gene expression 
-Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `st_dv` creates a standard deviation matrix of gene expression for each pathway:
+## `stdv`: Standard deviations of genes for each pathway starting from a matrix of gene expression 
+Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `stdv` creates a standard deviation matrix of gene expression for each pathway:
 
 ```{r, eval = TRUE}
-score_st_dev<-st_dv(DataMatrix=tumo[,1:2],pathway=path)
+score_st_dev<-stdv(gslist=list_path_gene)
 ```
 
 
@@ -514,20 +529,20 @@ score_st_dev<-st_dv(DataMatrix=tumo[,1:2],pathway=path)
 
 
 
-## `euc_dist_crtlk`: Euclidean distance for cross-talk measure
-Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `euc_dist_crtlk` creates an euclidean distance matrix of gene expression for pairwise pathway.
+## `eucdistcrtlk`: Euclidean distance for cross-talk measure
+Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `eucdistcrtlk` creates an euclidean distance matrix of gene expression for pairwise pathway.
 
-```{r, eval = TRUE}
-score_euc_dista<-euc_dist_crtlk(dataFilt=tumo[,1:2],pathway=path)
+```{r, eval = FALSE}
+score_euc_distance<-eucdistcrtlk(dataFilt=tumo[,1:2],pathway_exp=pathway[1:10])
 ```
 
 
-## `ds_score_crtlk`: Discriminating score for cross-talk measure
-Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `ds_score_crtlk` creates an discriminating score matrix for pairwise pathway as measure of cross-talk. Discriminating score is given by |M1-M2|/S1+S2 where M1 and M2 are mean and S1 and S2 standard deviation of expression levels of genes in a pathway 1 and and in a pathway 2 . 
+## `dsscorecrtlk`: Discriminating score for cross-talk measure
+Starting from a matrix of gene expression (rows are genes and columns are samples, TCGA data) the function `dsscorecrtlk` creates an discriminating score matrix for pairwise pathway as measure of cross-talk. Discriminating score is given by |M1-M2|/S1+S2 where M1 and M2 are mean and S1 and S2 standard deviation of expression levels of genes in a pathway 1 and and in a pathway 2 . 
 
 
-```{r, eval = TRUE}
-cross_talk_st_dv<-ds_score_crtlk(dataFilt=tumo[,1:2],pathway=path)
+```{r, eval = FALSE}
+cross_talk_st_dv<-dsscorecrtlk(dataFilt=tumo[,1:2],pathway_exp=pathway[1:10])
 ```
 
 
@@ -540,14 +555,8 @@ This function is used to find the interacting pathways that are altered in a par
 
 ```{r, eval = FALSE}
 nf <- 60
-res_class<-svm_classification(TCGA_matrix=score_euc_dist[1:2,],nfs=nf,normal=colnames(norm[,1:12]),tumour=colnames(tumo[,1:12]))
-```
-
-```{r, fig.width=6, fig.height=4, echo=FALSE, fig.align="center"}
-library(png)
-library(grid)
-img <- readPNG("plot_class.png")
-grid.raster(img)
+res_class<-svm_classification(TCGA_matrix=score_euc_dista[1:30,],nfs=nf,
+normal=colnames(norm[,1:10]),tumour=colnames(tumo[,1:10]))
 ```
 
 
@@ -556,21 +565,39 @@ grid.raster(img)
 
 The function `IPPI`, using pathways and networks data, calculates the driver genes for each pathway. Please see Cava et al. BMC Genomics 2017.  
 
+```{r, eval = FALSE}
+ DRIVER_SP<-IPPI(pathax=pathway_matrix[,1:3],netwa=netw_IPPI[1:50000,])
+```
+
+# `Visualization`: Gene interactions and pathways
+
+StarBioTrek presents several functions for the preparation to the visualization of gene-gene interactions and pathway cross-talk using the qgraph package [@ref3]. The function plotcrosstalk
+prepares the data:
+
 ```{r, eval = TRUE}
-DRIVER_SP<-IPPI(patha=path,netwa=netw)
+formatplot<-plotcrosstalk(pathway_plot=pathway[1:6],gs_expre=tumo)
+library(qgraph)
+qgraph(formatplot[[1]], minimum = 0.25, cut = 0.6, vsize = 5, groups = formatplot[[2]], legend = TRUE, borders = FALSE,layoutScale=c(0.8,0.8))
+```
+
+```{r, eval = TRUE}
+qgraph(formatplot[[1]],groups=formatplot[[2]], layout="spring", diag = FALSE,
+cut = 0.6,legend.cex = 0.5,vsize = 6,layoutScale=c(0.8,0.8))
 ```
 
 
-# `plotting_cross_talk`: Plot pathway cross-talk
+A circle can be generated using the function  `circleplot` [@ref4]. A score for each gene can be assigned.
 
-The function `plotting_cross_talk` creates the input for the visualization using `qgraph` package. This function uses the relationship among genes as correlation  (green for positive correlations and red for negative correlations) and the width of the lines indicates the strength of the correlation. 
+```{r, eval = FALSE}
+formatplot<-plotcrosstalk(pathway_plot=pathway[1:6],gs_expre=tumo)
+score<-runif(length(formatplot[[2]]), min=-10, max=+10)
+circleplot(preplot=formatplot,scoregene=score)
+```
 
-
-The result from `plotting_cross_talk` is shown below:
 ```{r, fig.width=6, fig.height=4, echo=FALSE, fig.align="center"}
 library(png)
 library(grid)
-img <- readPNG("plot_path.png")
+img <- readPNG("circleplot.png")
 grid.raster(img)
 ```
 

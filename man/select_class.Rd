@@ -4,10 +4,10 @@
 \alias{select_class}
 \title{Select the class of TCGA data}
 \usage{
-select_class(auc.df, cutoff)
+select_class(performance_matrix, cutoff)
 }
 \arguments{
-\item{auc.df}{list of AUC value}
+\item{performance_matrix}{list of AUC value}
 
 \item{cutoff}{cut-off for AUC value}
 }
@@ -15,5 +15,5 @@ select_class(auc.df, cutoff)
 a gene expression matrix with only pairwise pathway with a particular cut-off
 }
 \description{
-select two labels from ID barcode
+select best performance
 }
