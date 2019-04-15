@@ -11,11 +11,42 @@
 #' @name StarBioTrek
 NULL
 
-#' Pathway data from KEGG
+
+#' pathway data list
 #' @docType data
 #' @keywords internal
 #' @name path
-#' @format A data frame with rows and  variables
+#' @format A list of dataframe
+NULL
+
+#' pathway data list
+#' @docType data
+#' @keywords internal
+#' @name Data_CANCER_normUQ_fil
+#' @format A dataframe with gene expression profiles
+NULL
+
+
+#' pathway data
+#' @docType data
+#' @keywords internal
+#' @name pathway
+#' @format A data frame with  rows and variables
+NULL
+
+#' network data for IPPI fucntion
+#' @docType data
+#' @keywords internal
+#' @name netw_IPPI
+#' @format A list
+NULL
+
+
+#' network data
+#' @docType data
+#' @keywords internal
+#' @name pathway_matrix
+#' @format A data frame with  rows and variables
 NULL
 
 #' network data
@@ -25,20 +56,19 @@ NULL
 #' @format A data frame with  rows and variables
 NULL
 
-
-
-
-#' TCGA data
+#' All pathways data from KEGG
 #' @docType data
 #' @keywords internal
-#' @name Data_CANCER_normUQ_filt
-#' @format A data frame with rows and variables
+#' @name path_KEGG
+#' @format A list of pathways with the involved genes
 NULL
+
+
 
 #' Score Matrix of pairwise pathway using euclidean distance
 #' @docType data
 #' @keywords internal
-#' @name score_euc_dist
+#' @name score_euc_dista
 #' @format A data frame with rows and variables
 NULL
 
@@ -53,12 +83,5 @@ NULL
 #' @docType data
 #' @keywords internal
 #' @name tumo
-#' @format A data frame with rows and variables
-NULL
-
-#' A matrix of gene expression for pathways given by the user. 
-#' @docType data
-#' @keywords internal
-#' @name list_path_plot
 #' @format A data frame with rows and variables
 NULL

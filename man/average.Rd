@@ -4,12 +4,10 @@
 \alias{average}
 \title{For TCGA data get human pathway data and creates a matrix with the average of genes for each pathway.}
 \usage{
-average(dataFilt, pathway)
+average(pathwayexpsubset)
 }
 \arguments{
-\item{dataFilt}{TCGA matrix}
-
-\item{pathway}{pathway data}
+\item{pathwayexpsubset}{list of pathway data}
 }
 \value{
 a matrix value for each pathway
@@ -18,5 +16,6 @@ a matrix value for each pathway
 average creates a matrix with a summarized value for each pathway
 }
 \examples{
-score_mean<-average(dataFilt=tumo[,1:2],path)
+list_path_gene<-GE_matrix(DataMatrix=Data_CANCER_normUQ_fil,genes.by.pathway=pathway[1:50])
+score_mean<-average(pathwayexpsubset=list_path_gene)
 }

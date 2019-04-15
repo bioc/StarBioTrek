@@ -4,10 +4,10 @@
 \alias{IPPI}
 \title{Multilayer analysis Cava et al. BMC Genomics 2017}
 \usage{
-IPPI(patha, netwa)
+IPPI(pathax, netwa)
 }
 \arguments{
-\item{patha}{pathway matrix Please see example path for format}
+\item{pathax}{pathway matrix Please see example path for format}
 
 \item{netwa}{a dataframe Please see example path for format netw}
 }
@@ -18,5 +18,6 @@ a list with driver genes for each pathway
 IPPI function takes as input pathway and network data in order to select genes with central role in that pathway. Please see Cava et al. 2017 BMC Genomics
 }
 \examples{
-DRIVER_SP<-IPPI(patha=path,netwa=netw)
+\dontrun{
+DRIVER_SP<-IPPI(pathax=pathway_matrix[,1:3],netwa=netw_IPPI[1:50000,])}
 }

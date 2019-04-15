@@ -7,22 +7,25 @@
 svm_classification(TCGA_matrix, tumour, normal, nfs)
 }
 \arguments{
-\item{TCGA_matrix}{gene expression matrix}
+\item{TCGA_matrix}{gene expression matrix where the first two columns represent the interacting pathways.}
 
 \item{tumour}{barcode samples for a class}
 
 \item{normal}{barcode samples for another class}
 
 \item{nfs}{nfs split data into a training  and test set}
+
+\item{Target}{label for the classes}
 }
 \value{
 a list with AUC value for pairwise pathway
 }
 \description{
-svm class creates a list with auc value
+svm class creates a list with AUC, Accuracy, Sensitivity, Specificity values
 }
 \examples{
+\dontrun{
 nf <- 60
-res_class<-svm_classification(TCGA_matrix=score_euc_dist,nfs=nf,
-normal=colnames(norm[,1:10]),tumour=colnames(tumo[,1:10]))
+res_class<-svm_classification(TCGA_matrix=score_euc_dista[1:30,],nfs=nf,
+normal=colnames(norm[,1:10]),tumour=colnames(tumo[,1:10]))}
 }

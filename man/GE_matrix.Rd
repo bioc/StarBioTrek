@@ -2,21 +2,21 @@
 % Please edit documentation in R/path_star.R
 \name{GE_matrix}
 \alias{GE_matrix}
-\title{Get human KEGG pathway data and a gene expression matrix in order to obtain a matrix with the gene expression for only pathways given in input .}
+\title{Get human KEGG pathway data and a gene expression matrix in order to obtain a list with the gene expression for only pathways given in input .}
 \usage{
-GE_matrix(DataMatrix, pathway)
+GE_matrix(DataMatrix, genes.by.pathway)
 }
 \arguments{
 \item{DataMatrix}{gene expression matrix (eg.TCGA data)}
 
-\item{pathway}{pathway data as provided by getKEGGdata}
+\item{genes.by.pathway}{a list of pathway data as provided by GetData and ConvertedID_genes}
 }
 \value{
-a matrix for each pathway ( gene expression level belong to that pathway)
+a list for each pathway ( gene expression level belong to that pathway)
 }
 \description{
-GE_matrix creates a matrix of gene expression for pathways given by the user.
+GE_matrix creates a list of gene expression for pathways given by the user.
 }
 \examples{
-list_path_gene<-GE_matrix(DataMatrix=tumo[,1:2],pathway=path)
+list_path_gene<-GE_matrix(DataMatrix=tumo[,1:2],genes.by.pathway=pathway[1:5])
 }
