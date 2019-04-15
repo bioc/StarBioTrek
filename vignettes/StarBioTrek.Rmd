@@ -376,7 +376,7 @@ BiocManager::install("StarBioTrek")
 The user can select the pathway database and species of interest using some functions implemented in graphite [@ref1]
 
 ```{r, eval = TRUE}
-pathwayDatabases()
+sel<-pathwayDatabases()
 ```
 
 ```{r, eval = TRUE, echo = FALSE}
