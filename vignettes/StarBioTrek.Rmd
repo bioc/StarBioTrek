@@ -377,12 +377,12 @@ The user can select the pathway database and species of interest using some func
 
 ```{r, eval = TRUE}
 library(graphite)
-pathwayDatabases()
+sel<-pathwayDatabases()
 ```
 
 ```{r, eval = TRUE, echo = FALSE}
 knitr::kable(sel, digits = 2,
-             caption = "List of patwhay database and species",row.names = FALSE)
+             caption = "List of patwhay databases and species",row.names = FALSE)
 ```
 
 ## `GetData`: Searching pathway data for download 
