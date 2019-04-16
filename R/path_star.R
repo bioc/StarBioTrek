@@ -234,6 +234,14 @@ eucdistcrtlk <- function(dataFilt,pathway_exp){
 #heatmap(as.matrix(score_euc_dista_t),scale="column",margins =c(12,9))
 
 
+#listpathgenees<-GE_matrix(dataFilt,pathway_exp)
+#listpathgenees<-listpathgenees[!sapply(listpathgenees, is.null)]
+#listpathgenees<-lapply(listpathgenees,function(x) apply(x,2,sd))
+
+
+#listpathgenees<-listpathgenees[!sapply(listpathgenees, function(x) all(is.na(x)))]
+#gsmatrix_sd<-do.call("rbind",listpathgenees)
+
 
 #' @title For TCGA data get human pathway data and creates a measure of standard deviations among pathways 
 #' @description stdv creates a matrix with standard deviation for pathways  
@@ -255,9 +263,6 @@ stdv<-function(gslist){
 
 
 
-
-
-
 #' @title For TCGA data get human pathway data and creates a measure of discriminating score among pathways 
 #' @description dsscorecrtlk creates a matrix with  discriminating score for pathways  
 #' @param dataFilt TCGA matrix
@@ -269,6 +274,13 @@ stdv<-function(gslist){
 dsscorecrtlk<-function(dataFilt,pathway_exp){
   listpathgenees<-GE_matrix(dataFilt,pathway_exp)
   PEAmatrix<-average(listpathgenees)
+  
+  # standard deviation
+  PEAmatrix_sd<-stdv(listpathgenees)
+  r<-intersect(rownames(PEAmatrix),rownames(PEAmatrix_sd))
+  PEAmatrix<-PEAmatrix[r,]
+  PEAmatrix_sd<-PEAmatrix_sd[r,]
+  
   #step 5 distance
   # EUCLIDEA DISTANCE
   df=combn(rownames(PEAmatrix),2) # possibili relazioni tra i pathway
@@ -281,7 +293,7 @@ dsscorecrtlk<-function(dataFilt,pathway_exp){
     distance<-dist(patients) # calcolo distanza EUCLIDEA tra le possibile combinazioni
     ma_d[,p]<-distance
   }
-  PEAmatrix_sd<-stdv(listpathgenees)
+  
   df=combn(rownames(PEAmatrix_sd),2) 
   df=t(df)
   ma<-matrix(0,nrow(df),ncol(PEAmatrix_sd)) # creo matrix che conterr le somme delle dev st
@@ -300,8 +312,9 @@ dsscorecrtlk<-function(dataFilt,pathway_exp){
   for( i in 1: ncol(pp2)){
     pp2[,i] <- as.numeric(as.character(pp2[,i]))
   
-return(pp2)
-}
+
+  }
+  return(pp2)
 }
 
 
