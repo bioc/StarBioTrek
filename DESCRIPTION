@@ -1,7 +1,7 @@
 Package: StarBioTrek
 Type: Package
 Title: StarBioTrek
-Version: 1.29.0
+Version: 1.29.1
 Date: 04-16-2019
 Author: Claudia Cava,
     Isabella Castiglioni
@@ -40,3 +40,4 @@ LazyData: true
 URL: https://github.com/claudiacava/StarBioTrek
 BugReports: https://github.com/claudiacava/StarBioTrek/issues
 RoxygenNote: 6.1.1
+PackageStatus: Deprecated
